@@ -1,4 +1,22 @@
 {
+  "name": "hyperism",
+  "version": "0.0.0",
+  "description": "Ethereum NFT trading system for GLSL Shader code gadget and visualization",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyperism/hyperism.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hyperism/hyperism/issues"
+  },
+  "homepage": "https://github.com/hyperism/hyperism#readme",
   "dependencies": {
     "truffle": "^5.5.5",
     "truffle-hdwallet-provider": "^1.0.17",
