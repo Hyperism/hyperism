@@ -18,8 +18,9 @@ jobs:
         with:
           node-version: 14.18.1
           cache: 'npm'
+      - name: Upgrade NPM
+        run: npm install -g npm
       - name: Install packages
         run: npm ci
-
       - name: === Unit-testing ===
         run: npm run test
