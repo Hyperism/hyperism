@@ -4,6 +4,7 @@
     "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
+    "prettier": "^2.6.1",
     "solhint": "^3.3.7"
   },
   "scripts": {
