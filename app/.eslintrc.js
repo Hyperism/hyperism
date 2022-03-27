@@ -8,8 +8,6 @@ module.exports = {
     'airbnb/hooks',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:prettier/recommended',
-    'prettier',
   ],
   rules: {
     'react/prop-types': 0,

@@ -23,12 +23,10 @@
     "@openzeppelin/contracts": "^2.4.0"
   },
   "devDependencies": {
-    "prettier-plugin-solidity": "^1.0.0-beta.19",
     "solhint": "^3.3.7"
   },
   "scripts": {
     "solhint": "./node_modules/.bin/solhint -f table contracts/**/*.sol",
-    "prettier:solidity": "./node_modules/.bin/prettier --write contracts/**/*.sol",
     "test": "./node_modules/.bin/truffle test"
   }
 }
