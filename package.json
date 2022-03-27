@@ -20,6 +20,7 @@
     "solhint": "./node_modules/.bin/solhint -f table contracts/**/*.sol",
     "prettier:solidity": "./node_modules/.bin/prettier --write contracts/**/*.sol",
     "eslint": "./node_modules/.bin/eslint --ext .jsx --ext .js migrations/",
-    "prettier:eslint": "./node_modules/.bin/prettier --write migrations/**/*.js"
+    "prettier:eslint": "./node_modules/.bin/prettier --write migrations/**/*.js",
+    "test": "./node_modules/.bin/truffle test"
   }
 }
