@@ -2,8 +2,8 @@
 pragma solidity >=0.4.21 <0.7.0;
 
 contract ComplexStorage {
-    uint public storeduint1 = 15;
-    uint public constant constuint = 16;
+    uint256 public storeduint1 = 15;
+    uint256 public constant CONSTUINT = 16;
     uint128 public investmentsLimit = 17055;
     uint32 public investmentsDeadlineTimeStamp = uint32(now);
 
@@ -11,10 +11,10 @@ contract ComplexStorage {
     bytes32 public string2 = "test1236";
     string public string3 = "lets string something";
 
-    mapping (address => uint) uints1;
-    mapping (address => DeviceData) structs1;
+    mapping(address => uint256) private uints1;
+    mapping(address => DeviceData) private structs1;
 
-    uint[] public uintarray;
+    uint256[] public uintarray;
     DeviceData[] public deviceDataArray;
     DeviceData public singleDD;
 
@@ -31,8 +31,16 @@ contract ComplexStorage {
         uints1[address1] = 88;
         uints1[address2] = 99;
 
-        structs1[address1] = DeviceData("deviceBrand", "deviceYear", "wearLevel");
-        structs1[address2] = DeviceData("deviceBrand2", "deviceYear2", "wearLevel2");
+        structs1[address1] = DeviceData(
+            "deviceBrand",
+            "deviceYear",
+            "wearLevel"
+        );
+        structs1[address2] = DeviceData(
+            "deviceBrand2",
+            "deviceYear2",
+            "wearLevel2"
+        );
         singleDD = DeviceData("deviceBrand3", "deviceYear3", "wearLevel3");
 
         uintarray.push(8000);

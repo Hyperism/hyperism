@@ -7,9 +7,9 @@ contract TutorialToken is ERC20 {
     string public name = "TutorialToken";
     string public symbol = "TT";
     uint256 public decimals = 2;
-    uint256 public INITIAL_SUPPLY = 12000;
+    uint256 public initialSupply = 12000;
 
     constructor() public {
-        _mint(msg.sender, INITIAL_SUPPLY);
+        _mint(msg.sender, initialSupply);
     }
 }
