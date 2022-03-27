@@ -5,5 +5,8 @@
   },
   "devDependencies": {
     "solhint": "^3.3.7"
+  },
+  "scripts": {
+    "solhint": "./node_modules/.bin/solhint -f table contracts/**/*.sol"
   }
 }
