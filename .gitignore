@@ -147,3 +147,7 @@ contracts/.placeholder
 test/.placeholder
 build
 node_modules
+
+# Drizzle
+app/src/contracts
+.DS_Store
