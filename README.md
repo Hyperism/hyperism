@@ -2,4 +2,4 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Ethereum DApp for source code version control system
+Ethereum NFT trading system for GLSL Shader code gadget and visualization
