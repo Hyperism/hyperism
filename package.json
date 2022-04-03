@@ -18,15 +18,15 @@
   },
   "homepage": "https://github.com/hyperism/hyperism#readme",
   "dependencies": {
+    "@openzeppelin/contracts": "^2.4.0",
     "truffle": "^5.5.5",
-    "truffle-hdwallet-provider": "^1.0.17",
-    "@openzeppelin/contracts": "^2.4.0"
+    "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
-    "solhint": "^3.3.7"
+    "solium": "^1.2.5"
   },
   "scripts": {
-    "solhint": "./node_modules/.bin/solhint -f table contracts/**/*.sol",
+    "lint": "./node_modules/.bin/solium -d contracts/",
     "test": "./node_modules/.bin/truffle test"
   }
 }
