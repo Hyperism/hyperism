@@ -28,6 +28,6 @@
   },
   "scripts": {
     "lint": "./node_modules/.bin/solium -d contracts/",
-    "test": "./node_modules/.bin/truffle test"
+    "test": "./node_modules/.bin/remix-tests test"
   }
 }
