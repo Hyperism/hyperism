@@ -23,6 +23,7 @@
     "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
+    "@remix-project/remix-tests": "^0.2.11",
     "solium": "^1.2.5"
   },
   "scripts": {
