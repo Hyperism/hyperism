@@ -21,7 +21,7 @@ describe("MintShaderToken Contract", function () {
     hardhatToken = await Token.deploy();
     });
 
-    describe("Tests", function() {
+    describe("Tests1", function() {
       // mintShaderToken(uint _tokenId)
       it("After minting, value tokenExist[_tokenId] changes", async function() {
         const a = await hardhatToken.connect(addr1).exist(1);
@@ -41,7 +41,7 @@ describe("MintShaderToken Contract", function () {
 
       // setTokenUri(uint _tokenId, string memory uri)
       // uri(uint _tokenId)
-      it("", async function() {
+      it("Only owner can set TokenUri", async function() {
         
         await hardhatToken.connect(addr1).mintShaderToken(1);
         const a = "example uri";
