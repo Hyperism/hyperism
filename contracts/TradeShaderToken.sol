@@ -37,7 +37,7 @@ contract TradeShaderToken {
     function purchaseToken(uint _tokenId) public payable {
         
         require (isOwner(_tokenId) == false, "You already own it" );
-        require (msg.value >= tokenPrice[_tokenId], "Not enough money");
+        require (msg.value == tokenPrice[_tokenId], "Not enough money or Over payed");
         
 
         payable(mstAddress.ownerOf(_tokenId)).transfer(msg.value);
