@@ -5,6 +5,7 @@ class Shader {
     private gl: WebGLRenderingContext;
     private vs: WebGLShader;
     private fs: WebGLShader;
+    private program: WebGLProgram;
 
     /**
      * Construct shader wrapper with given WebGL context, vertex shader source and fragment shader source
@@ -18,6 +19,7 @@ class Shader {
         this.gl = gl;
         this.vs = this.createShader(gl.VERTEX_SHADER, vs_source);
         this.fs = this.createShader(gl.FRAGMENT_SHADER, fs_source);
+        this.program = this.createProgram(this.vs, this.fs);
     }
 
     /**
@@ -38,6 +40,41 @@ class Shader {
         }
 
         return shader;
+    }
+
+    /**
+     * Create WebGL Program and Link Shaders
+     * @param vs vertex shader to be linked
+     * @param fs fragment shader to be linked
+     * @returns linked WebGL Program
+     */
+    private createProgram = (vs: WebGLShader, fs: WebGLShader): WebGLProgram => {
+        let program = this.gl.createProgram()!;
+        this.gl.attachShader(program, vs);
+        this.gl.attachShader(program, fs);
+
+        this.gl.linkProgram(program);
+        if ( !this.gl.getProgramParameter( program, this.gl.LINK_STATUS) ) {
+            var info = this.gl.getProgramInfoLog(program);
+            throw 'Could not compile WebGL program. \n\n' + info;
+        }
+
+        return program;
+    }
+
+    /**
+     * @param name name of uniform variable to be retrieved
+     * @returns uniform variable location
+     */
+    private getUniformLocation = (name: string): WebGLUniformLocation => {
+        return this.gl.getUniformLocation(this.program, name)!;
+    }
+
+    /**
+     * Bind current shader program to the context
+     */
+    public bind = (): void => {
+        this.gl.useProgram(this.program);
     }
 };
 
