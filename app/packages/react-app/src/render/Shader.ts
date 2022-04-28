@@ -1,19 +1,34 @@
+/**
+ * WebGL Shader Wrapper class
+ */
 class Shader {
-    private gl: WebGL2RenderingContext;
+    private gl: WebGLRenderingContext;
     private vs: WebGLShader;
     private fs: WebGLShader;
 
-    constructor(gl: WebGL2RenderingContext, vs_source: string, fs_source: string) {
+    /**
+     * Construct shader wrapper with given WebGL context, vertex shader source and fragment shader source
+     * 
+     * @throws Error if shader compilation failed
+     * @param gl WebGL context
+     * @param vs_source source code string of vertex shader
+     * @param fs_source source code string of fragment shader
+     */
+    constructor(gl: WebGLRenderingContext, vs_source: string, fs_source: string) {
         this.gl = gl;
-        this.vs = this.createShader(WebGL2RenderingContext.VERTEX_SHADER, vs_source);
-        this.fs = this.createShader(WebGL2RenderingContext.FRAGMENT_SHADER, fs_source);
+        this.vs = this.createShader(gl.VERTEX_SHADER, vs_source);
+        this.fs = this.createShader(gl.FRAGMENT_SHADER, fs_source);
     }
 
+    /**
+     * Create and Compile WebGL Shader and Returns
+     * 
+     * @param type Shader types. gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
+     * @param source source code string for compilation
+     * @returns compiled WebGL Shader
+     */
     private createShader = (type: GLenum, source: string): WebGLShader => {
-        let shader = this.gl.createShader(type);
-        if (!shader || !(shader instanceof WebGLShader)) {
-            throw new Error('Failed to create shader');
-        }
+        let shader = this.gl.createShader(type)!;
         this.gl.shaderSource(shader, source);
         this.gl.compileShader(shader);
         
