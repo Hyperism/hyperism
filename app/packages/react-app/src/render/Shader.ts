@@ -10,7 +10,10 @@ class Shader {
     }
 
     private createShader = (type: GLenum, source: string): WebGLShader => {
-        let shader: WebGLShader = this.gl.createShader(type);
+        let shader = this.gl.createShader(type);
+        if (!shader || !(shader instanceof WebGLShader)) {
+            throw new Error('Failed to create shader');
+        }
         this.gl.shaderSource(shader, source);
         this.gl.compileShader(shader);
         
