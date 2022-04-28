@@ -1,7 +1,14 @@
 {
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "tsconfigRootDir": "__dirname",
+      "ecmaVersion": 2022,
+      "sourceType": "module"
+    },
     "plugins": [
-      "@typescript-eslint"
+      "@typescript-eslint/eslint-plugin",
+      "eslint-plugin-tsdoc"
     ],
     "extends": [
       "eslint:recommended",
@@ -16,6 +23,7 @@
             "varsIgnorePattern": "^_",
             "caughtErrorsIgnorePattern": "^_"
           }
-        ]
+        ],
+        "tsdoc/syntax": "warn"
     }
 }
