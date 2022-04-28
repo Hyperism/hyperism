@@ -49,7 +49,7 @@ function WalletButton() {
 
 function App() {
   // Read more about useDapp on https://usedapp.io/
-  const { error: contractCallError, value: tokenBalance } =
+  const { error: _contractCallError, value: _tokenBalance } =
     useCall({
        contract: new Contract(addresses.ceaErc20, abis.erc20),
        method: "balanceOf",
