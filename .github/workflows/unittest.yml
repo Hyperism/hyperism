@@ -7,8 +7,8 @@ on:
     branches: [ main ]
 
 jobs:
-  lint:
-    name: "Unit-testing"
+  solidity_test:
+    name: "Smart Contract Unit testing"
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
@@ -24,3 +24,21 @@ jobs:
         run: npm ci
       - name: === Unit-testing ===
         run: npm run test
+  dapp_test:
+    name: "Javascript/Typescript Unit testing"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.18.1
+          cache: 'npm'
+      - name: Upgrade NPM
+        run: npm install -g npm
+      - name: Install packages
+        run: npm ci
+      - name: === Unit-testing ===
+        run: yarn react-app:test
+        working-directory: app
