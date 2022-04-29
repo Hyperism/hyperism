@@ -71,10 +71,29 @@ class Shader {
     }
 
     /**
+     * Send given value to uniform variable of given name
+     * @param name name of uniform variable to be set
+     * @param value value to be set
+     */
+    public sendUniform1i = (name: string, value: number): void => {
+        let location = this.getUniformLocation(name);
+        this.gl.uniform1i(location, value);
+    }
+
+    /**
      * Bind current shader program to the context
      */
     public bind = (): void => {
         this.gl.useProgram(this.program);
+    }
+
+    /**
+     * Destroy current linked program and shaders
+     */
+    public destroy = (): void => {
+        this.gl.deleteShader(this.vs);
+        this.gl.deleteShader(this.fs);
+        this.gl.deleteProgram(this.program);
     }
 };
 
