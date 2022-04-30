@@ -18,15 +18,24 @@
   },
   "homepage": "https://github.com/hyperism/hyperism#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "^2.5.1",
     "truffle": "^5.5.5",
     "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.6.0",
+    "@remix-project/remix-tests": "^0.2.13",
+    "chai": "^4.3.6",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.6.4",
+    "hardhat": "^2.9.3",
+    "mocha": "^9.2.2",
     "solium": "^1.2.5"
   },
   "scripts": {
     "lint": "./node_modules/.bin/solium -d contracts/",
-    "test": "./node_modules/.bin/truffle test"
+    "test": "./node_modules/.bin/mocha test",
+    "build": "waffle"
   }
 }
