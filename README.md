@@ -6,7 +6,7 @@ Ethereum NFT trading system for GLSL Shader code gadget and visualization
 
 # Quick Overview
 ```bash
-git clone https://github.com/Hyperism/hyperism.git
+git clone --recursive https://github.com/Hyperism/hyperism.git
 cd hyperism
 npm install
 // Contract build & deploy will be added later
