@@ -1,6 +1,9 @@
 # hyperism
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Solidity Lint github action](https://github.com/hyperism/hyperism/actions/workflows/lint_solidity.yml/badge.svg?branch=main)
+![Smart Contract Unit testing github action](https://github.com/hyperism/hyperism/actions/workflows/test_smartcontract.yml/badge.svg?branch=main)
+![DApp Unit testing github action](https://github.com/hyperism/hyperism/actions/workflows/test_dapp.yml/badge.svg?branch=main)
 
 Ethereum NFT trading system for GLSL Shader code gadget and visualization
 
