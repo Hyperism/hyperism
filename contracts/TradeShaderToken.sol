@@ -35,26 +35,26 @@ contract TradeShaderToken {
     }
 
     function purchaseToken(uint _tokenId) public payable {
-        
-        require (isOwner(_tokenId) == false, "You already own it" );
+
+        require (isOwner(_tokenId) == false, "You already own it");
         require (msg.value == tokenPrice[_tokenId], "Not enough money or Over payed");
-        
+
 
         payable(mstAddress.ownerOf(_tokenId)).transfer(msg.value);
         // send money
-        
+
         mstAddress.safeTransferFrom(mstAddress.ownerOf(_tokenId), msg.sender, _tokenId, 1, "");
-        // change token ownership 
+        // change token ownership
 
         tokenPrice[_tokenId] = 0;
-        // set 0 
+        // set 0
         // not on sale
     }
-    
+
 
     function isOwner(uint256 tokenId) public view returns (bool) {
         return mstAddress.balanceOf(msg.sender, tokenId) != 0;
     }
-    // owner -> true, 
+    // owner -> true,
     // else -> false
 }
