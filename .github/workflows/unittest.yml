@@ -23,7 +23,7 @@ jobs:
       - name: Install packages
         run: npm ci
       - name: === Unit-testing ===
-        run: npm run test
+        run: npx hardhat test
   dapp_test:
     name: "Javascript/Typescript Unit testing"
     runs-on: ubuntu-latest
@@ -39,6 +39,7 @@ jobs:
         run: npm install -g npm
       - name: Install packages
         run: npm ci
+        working-directory: app
       - name: === Unit-testing ===
         run: yarn react-app:test
         working-directory: app
