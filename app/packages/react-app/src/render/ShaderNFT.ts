@@ -1,30 +1,30 @@
 import Shader from "./Shader";
-import {QUAD_SHADER_SOURCE, SAMPLE_FRAGMENT_SHADER_SOURCE} from "./shader/shader_source"
+import QUAD_SHADER_SOURCE from "./shader/shader_source"
 
 /**
  * Set of shader and live canvas for rendering ShaderNFT
- * @todo sustain canvas without crashing when the given shader cannot be compiled
+ * @remarks sustain canvas without crashing when the given shader cannot be compiled
  */
 class ShaderNFT {
-    private gl: WebGLRenderingContext;
+    private gl: WebGL2RenderingContext;
     private shader: Shader;
 
     /**
-     * @param gl WebGL context
-     * @param source source code string of fragment shader
-     * @param canvas canvas element to be rendered
+     * @param gl - WebGL context
+     * @param source - source code string of fragment shader
+     * @param canvas - canvas element to be rendered
      */
-    constructor(gl: WebGLRenderingContext, source: string) {
+    constructor(gl: WebGL2RenderingContext, source: string) {
         this.gl = gl;
         this.shader = new Shader(gl, QUAD_SHADER_SOURCE, source);
     }
 
     /**
      * Draw shader rendering result on the given context
-     * @param gl WebGL context
-     * @param frameCount frame count
+     * @param gl - WebGL context
+     * @param frameCount - frame count
      */
-    public draw = (gl: WebGLRenderingContext, frameCount: number): void => {
+    public draw = (gl: WebGL2RenderingContext, _frameCount: number): void => {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         // TODO(snowapril) : gl.viewport(0, 0, canvas.width, canvas.height);
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -36,11 +36,11 @@ class ShaderNFT {
 
     /**
      * This callback will be passed into editor onChanged event
-     * @param source source code string of fragment shader
+     * @param source - source code string of fragment shader
      */
-    public tryCompile = (source: string): void => {
+     public tryCompile = (source: string): void => {
         try {
-            let newShader: Shader = new Shader(this.gl, QUAD_SHADER_SOURCE, source);
+            const newShader: Shader = new Shader(this.gl, QUAD_SHADER_SOURCE, source);
             // When compile success, destroy original shader and replace with new shader
             this.shader.destroy();
             this.shader = newShader;
@@ -48,6 +48,6 @@ class ShaderNFT {
             console.log(e);
         }
     }
-};
+}
 
 export default ShaderNFT;

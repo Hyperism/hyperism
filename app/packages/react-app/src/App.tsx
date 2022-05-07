@@ -9,6 +9,8 @@ import logo from "./ethereumLogo.png";
 import { addresses, abis } from "@my-app/contracts";
 import GET_TRANSFERS from "./graphql/subgraph";
 
+import Editor from "./components/Editor";
+
 function WalletButton() {
   const [rendered, setRendered] = useState("");
 
@@ -47,7 +49,7 @@ function WalletButton() {
   );
 }
 
-function App() {
+function App(): JSX.Element {
   // Read more about useDapp on https://usedapp.io/
   const { error: _contractCallError, value: _tokenBalance } =
     useCall({
@@ -84,6 +86,7 @@ function App() {
         <Link href="https://usedapp.io/">Learn useDapp</Link>
         <Link href="https://thegraph.com/docs/quick-start">Learn The Graph</Link>
       </Body>
+      <Editor/>
     </Container>
   );
 }
