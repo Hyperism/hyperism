@@ -40,7 +40,7 @@ class ShaderNFT {
      */
      public tryCompile = (source: string): void => {
         try {
-            let newShader: Shader = new Shader(this.gl, QUAD_SHADER_SOURCE, source);
+            const newShader: Shader = new Shader(this.gl, QUAD_SHADER_SOURCE, source);
             // When compile success, destroy original shader and replace with new shader
             this.shader.destroy();
             this.shader = newShader;
