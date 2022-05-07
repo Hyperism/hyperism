@@ -1,10 +1,7 @@
-import { render } from "@testing-library/react";
-import React, { CanvasHTMLAttributes } from "react";
-
 import Shader from "@my-app/react-app/src/render/Shader";
 
 test("Shader compiles test", () => {
-  let vs_source = `#version 300 es
+  const vs_source = `#version 300 es
     attribute vec4 a_position;
     attribute vec4 a_color;
     out vec4 v_color;
@@ -13,7 +10,7 @@ test("Shader compiles test", () => {
         v_color = a_color;
     }
   `;
-  let fs_source = `#version 300 es
+  const fs_source = `#version 300 es
     precision mediump float;
     in vec4 v_color;
     void main() {
