@@ -47,7 +47,7 @@ function WalletButton() {
   );
 }
 
-function App() {
+function App(): JSX.Element {
   // Read more about useDapp on https://usedapp.io/
   const { error: _contractCallError, value: _tokenBalance } =
     useCall({
