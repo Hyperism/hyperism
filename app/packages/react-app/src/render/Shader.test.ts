@@ -7,7 +7,7 @@ test("Shader compiles test", () => {
   let vs_source = `
     attribute vec4 a_position;
     attribute vec4 a_color;
-    varying vec4 v_color;
+    out vec4 v_color;
     void main() {
         gl_Position = a_position;
         v_color = a_color;
@@ -15,7 +15,7 @@ test("Shader compiles test", () => {
   `;
   let fs_source = `
     precision mediump float;
-    varying vec4 v_color;
+    in vec4 v_color;
     void main() {
         gl_FragColor = v_color;
     }
