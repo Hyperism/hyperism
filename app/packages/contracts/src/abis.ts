@@ -1,9 +1,9 @@
-import erc20Abi from "./abis/erc20.json";
-import ownableAbi from "./abis/ownable.json";
+import MintShaderTokenABI from "./contracts/MintShaderToken.sol/MintShaderToken.json"
+import TradeShaderTokenABI from "./contracts/TradeShaderToken.sol/TradeShaderToken.json"
 
 const abis = {
-  erc20: erc20Abi,
-  ownable: ownableAbi,
+  mintShaderToken: MintShaderTokenABI,
+  tradeShaderToken: TradeShaderTokenABI,
 };
 
 export default abis;
