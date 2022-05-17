@@ -33,13 +33,13 @@ function App(): JSX.Element {
             path="/signup"
             element={
               localStorage.getItem("user") ? (
-                <SignUpPage />
-              ) : (
                 <Navigate
                   to={{
-                    pathname: "/login",
+                    pathname: "/main",
                   }}
                 />
+              ) : (
+                <SignUpPage />
               )
             }
           />
