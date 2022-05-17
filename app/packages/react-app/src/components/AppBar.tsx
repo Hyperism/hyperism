@@ -1,38 +1,48 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import AdbIcon from "@mui/icons-material/Adb";
 import logo from "../ethereumLogo.png";
+import { Navigate, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+import { Refresh } from "@mui/icons-material";
 
-const pages = ['Main', 'Explore', 'Editor', 'MyPages'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ["Main", "Explore", "Editor", "MyPages"];
 
 const ResponsiveAppBar = (): JSX.Element => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
 
-  const [avatarIcon, setAvartarIcon] = React.useState<string>("/static/images/avatar/2.jpg");
+  const [avatarIcon, setAvartarIcon] = React.useState<string>(
+    "/static/images/avatar/2.jpg"
+  );
 
   React.useEffect(() => {
     if (localStorage.getItem("user") != null) {
-        setAvartarIcon(logo);
+      setAvartarIcon(logo);
     }
   });
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    console.log(event.currentTarget);
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    console.log(event.currentTarget);
     setAnchorElUser(event.currentTarget);
   };
 
@@ -40,7 +50,8 @@ const ResponsiveAppBar = (): JSX.Element => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    console.log(event.currentTarget);
     setAnchorElUser(null);
   };
 
@@ -48,7 +59,7 @@ const ResponsiveAppBar = (): JSX.Element => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -56,18 +67,18 @@ const ResponsiveAppBar = (): JSX.Element => {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'consolas',
+              display: { xs: "none", md: "flex" },
+              fontFamily: "consolas",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             Hyperism
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -82,18 +93,18 @@ const ResponsiveAppBar = (): JSX.Element => {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
               }}
             >
               {pages.map((page) => (
@@ -103,7 +114,7 @@ const ResponsiveAppBar = (): JSX.Element => {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -111,27 +122,63 @@ const ResponsiveAppBar = (): JSX.Element => {
             href=""
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: 'monospace',
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             Hyperism
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            <Button
+              key={"Main"}
+              component={Link}
+              to="/main"
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Main
+            </Button>
+            <Button
+              key={"Explore"}
+              component={Link}
+              to="/explore"
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Explore
+            </Button>
+            <Button
+              key={"Editor"}
+              component={Link}
+              to="/editor"
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Editor
+            </Button>
+            {
+              localStorage.getItem("user") ? (
+                <Button
+                  key={"MyPages"}
+                  component={Link}
+                  to="/explore"
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  MyPages
+                </Button>
+              ) : (
+                <Button
+                  key={"Login"}
+                  component={Link}
+                  to="/login"
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Login
+                </Button>
+              )
+            }
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -141,26 +188,41 @@ const ResponsiveAppBar = (): JSX.Element => {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem key={"Profile"} onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">{"Profile"}</Typography>
+              </MenuItem>
+              <MenuItem key={"Account"} onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">{"Account"}</Typography>
+              </MenuItem>
+              <MenuItem key={"Dashboard"} onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">{"Dashboard"}</Typography>
+              </MenuItem>
+              <MenuItem
+                key={"Logout"}
+                onClick={() => {
+                  if (localStorage.getItem("user") != null) {
+                    localStorage.removeItem("user");
+                  }
+                  window.location.reload();
+                }}
+              >
+                <Typography textAlign="center">{"Logout"}</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
