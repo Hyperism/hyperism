@@ -66,6 +66,7 @@ function SignUpPage(): JSX.Element {
         .then((res) => {
           console.log("signup requset success : " + resizeBy);
           localStorage.setItem("user", JSON.stringify(res.data));
+          window.location.reload();
         })
         .catch((ex) => {
           console.log("signup requset fail : " + ex);
