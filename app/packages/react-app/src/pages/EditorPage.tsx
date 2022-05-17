@@ -51,20 +51,6 @@ function WalletButton() {
 }
 
 function EditorPage(): JSX.Element {
-  if (localStorage.getItem("user") == null) {
-    return (
-      <Popper open={true} transition>
-        {({ TransitionProps }) => (
-          <Fade {...TransitionProps}>
-            <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
-              The content of the Popper.
-            </Box>
-          </Fade>
-        )}
-      </Popper>
-    );
-  }
-
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
