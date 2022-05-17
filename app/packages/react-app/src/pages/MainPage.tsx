@@ -6,50 +6,13 @@ import Button from "@mui/material/Button";
 import { Header, Body, Image, Link } from "../components";
 import Editor from "../components/Editor";
 import { Container } from "@mui/material";
-
-function WalletButton() {
-  const [rendered, setRendered] = useState("");
-
-  const ens = useLookupAddress();
-  const { account, activateBrowserWallet, deactivate, error } = useEthers();
-
-  useEffect(() => {
-    if (ens) {
-      setRendered(ens);
-    } else if (account) {
-      setRendered(shortenAddress(account));
-    } else {
-      setRendered("");
-    }
-  }, [account, ens, setRendered]);
-
-  useEffect(() => {
-    if (error) {
-      console.error("Error while connecting wallet:", error.message);
-    }
-  }, [error]);
-
-  return (
-    <Button
-      onClick={() => {
-        if (!account) {
-          activateBrowserWallet();
-        } else {
-          deactivate();
-        }
-      }}
-    >
-      {rendered === "" && "Connect Wallet"}
-      {rendered !== "" && rendered}
-    </Button>
-  );
-}
+import MetamaskConnect from "../components/MetamaskConnect";
 
 function MainPage(): JSX.Element {
   return (
     <Container sx={{ bgcolor: "#282C34" }}>
       <Header>
-        <WalletButton />
+        <MetamaskConnect />
       </Header>
       <Body>
         <Image src={logo} alt="ethereum-logo" />
