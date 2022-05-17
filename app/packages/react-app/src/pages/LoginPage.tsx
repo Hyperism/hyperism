@@ -79,6 +79,7 @@ function LoginPage(): JSX.Element {
           console.log(localStorage.getItem("user"));
           localStorage.setItem("user", JSON.stringify(res.data));
           console.log("Bearer " + res.data.token);
+          window.location.reload();
         })
         .catch((ex) => {
           console.log("signup requset fail : " + ex);
