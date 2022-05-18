@@ -5,7 +5,7 @@ import MainPage from "./pages/MainPage";
 import EditorPage from "./pages/EditorPage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
-import ExplorerPage from "./pages/ExplorerPage";
+import ExplorePage from "./pages/ExplorePage";
 
 function App(): JSX.Element {
   return (
@@ -47,7 +47,7 @@ function App(): JSX.Element {
             path="/explore"
             element={
               localStorage.getItem("user") ? (
-                <ExplorerPage />
+                <ExplorePage />
               ) : (
                 <Navigate
                   to={{

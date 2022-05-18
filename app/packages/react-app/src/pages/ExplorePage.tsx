@@ -46,7 +46,7 @@ function WalletButton() {
   );
 }
 
-function ExplorerPage(): JSX.Element {
+function ExplorePage(): JSX.Element {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -75,4 +75,4 @@ function ExplorerPage(): JSX.Element {
   );
 }
 
-export default ExplorerPage;
+export default ExplorePage;
