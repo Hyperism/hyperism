@@ -1,12 +1,8 @@
-import { shortenAddress, useEthers, useLookupAddress } from "@usedapp/core";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
-import logo from "../ethereumLogo.png";
 import Button from "@mui/material/Button";
-import { Header, Body, Image, Link } from "../components";
-import Editor from "../components/Editor";
+import Link from "@mui/material/Link";
 import { Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -18,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 
+/* eslint-disable   @typescript-eslint/no-explicit-any */
 function Copyright(props: any): JSX.Element {
   return (
     <Typography
@@ -39,10 +36,10 @@ function Copyright(props: any): JSX.Element {
 const theme = createTheme();
 
 function SignUpPage(): JSX.Element {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+  const [_anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const handleCloseNavMenu = () => {
+  const _handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 

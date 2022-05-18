@@ -1,33 +1,23 @@
-import { shortenAddress, useEthers, useLookupAddress } from "@usedapp/core";
-import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import logo from "../ethereumLogo.png";
-import Button from "@mui/material/Button";
-import { Header, Body, Image, Link } from "../components";
+import React from "react";
 import Editor from "../components/Editor";
 import { Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { ImageList } from "@mui/material";
-import { ImageListItem } from "@mui/material";
-import { UserInfo, UserLoginInfo } from "./Interfaces";
+import { UserLoginInfo } from "./Interfaces";
 import axios from "axios";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 
 function ExplorePage(): JSX.Element {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+  const [_anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const handleCloseNavMenu = () => {
+  const _handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
   function joinHandler() {
+    /* eslint-disable   @typescript-eslint/no-non-null-assertion */
     console.log(localStorage.getItem("user")!);
+    /* eslint-disable   @typescript-eslint/no-non-null-assertion */
     const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
     console.log(userObj);
 

@@ -13,9 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import logo from "../ethereumLogo.png";
-import { Navigate, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { Refresh } from "@mui/icons-material";
 
 const pages = ["Main", "Explore", "Editor", "MyPages"];
 
@@ -158,27 +156,25 @@ const ResponsiveAppBar = (): JSX.Element => {
             >
               Editor
             </Button>
-            {
-              localStorage.getItem("user") ? (
-                <Button
-                  key={"MyPages"}
-                  component={Link}
-                  to="/explore"
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  MyPages
-                </Button>
-              ) : (
-                <Button
-                  key={"Login"}
-                  component={Link}
-                  to="/login"
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  Login
-                </Button>
-              )
-            }
+            {localStorage.getItem("user") ? (
+              <Button
+                key={"MyPages"}
+                component={Link}
+                to="/explore"
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                MyPages
+              </Button>
+            ) : (
+              <Button
+                key={"Login"}
+                component={Link}
+                to="/login"
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Login
+              </Button>
+            )}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

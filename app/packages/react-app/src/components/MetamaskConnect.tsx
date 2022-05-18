@@ -1,13 +1,8 @@
 import { shortenAddress, useEthers, useLookupAddress } from "@usedapp/core";
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import logo from "../ethereumLogo.png";
 import Button from "@mui/material/Button";
-import { Header, Body, Image, Link } from "../components";
-import Editor from "../components/Editor";
-import { Container } from "@mui/material";
 
-function MetamaskConnect() {
+function MetamaskConnect(): JSX.Element {
   const [rendered, setRendered] = useState("");
 
   const ens = useLookupAddress();
