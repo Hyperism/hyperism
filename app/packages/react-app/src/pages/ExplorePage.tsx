@@ -14,45 +14,34 @@ function ExplorePage(): JSX.Element {
     setAnchorElNav(null);
   };
 
-  function joinHandler() {
-    /* eslint-disable   @typescript-eslint/no-non-null-assertion */
-    console.log(localStorage.getItem("user")!);
-    /* eslint-disable   @typescript-eslint/no-non-null-assertion */
-    const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
-    console.log(userObj);
+  /* eslint-disable   @typescript-eslint/no-non-null-assertion */
+  console.log(localStorage.getItem("user")!);
+  /* eslint-disable   @typescript-eslint/no-non-null-assertion */
+  const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
+  console.log(userObj);
 
-    try {
-      const data = {
-        email: userObj.user.email,
-        password: userObj.user.password,
-      };
-      axios
-        .post("http://localhost:3000/meta", JSON.stringify(data), {
-          headers: {
-            "Content-Type": `application/json`,
-            Authorization: userObj.token,
-          },
-        })
-        .then((res) => {
-          console.log("signup requset success : " + res);
-          // console.log(axios.defaults.headers.common['Authorization']);
-          // axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
-          console.log(localStorage.getItem("user"));
-          localStorage.setItem("user", JSON.stringify(res.data));
-          console.log("Bearer " + res.data.token);
-          window.location.reload();
-        })
-        .catch((ex) => {
-          console.log("signup requset fail : " + ex);
-        })
-        .finally(() => {
-          console.log("Signup Request End");
-        });
-    } catch (e) {
-      console.log(e);
-    }
+  try {
+    axios
+      .get("http://localhost:3000/meta", {
+        headers: {
+          "Content-Type": `application/json`,
+          Authorization: userObj.token,
+        },
+      })
+      .then((res) => {
+        console.log("signup requset success : " + res.data);
+        JSON.parse(res.data);
+      })
+      .catch((ex) => {
+        console.log("signup requset fail : " + ex);
+      })
+      .finally(() => {
+        console.log("Signup Request End");
+      });
+  } catch (e) {
+    console.log(e);
   }
-  joinHandler();
+
   return (
     <Container sx={{ bgcolor: "#282C34" }}>
       <Container sx={{ py: 8 }} maxWidth="md">
