@@ -37,5 +37,11 @@ export interface MetadataAddInfo {
     minter: string,
     title: string,
     description: string
-    shaderCode: string,
+    shader: string,
+}
+
+export interface ShaderQueryInfo {
+  owner: string,
+  minter: string,
+  shader: string,
 }
