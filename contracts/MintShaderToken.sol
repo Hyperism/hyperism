@@ -51,5 +51,8 @@ contract MintShaderToken is ERC1155, Ownable {
     }
     // set uri of token
 
+    function modifyOwner(uint _tokenId) public {
+        tokenAddress[_tokenId] = msg.sender;
+    }
 
 }
