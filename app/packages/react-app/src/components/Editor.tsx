@@ -7,7 +7,7 @@ import ShaderNFT from "../render/ShaderNFT"
 /**
  * 
  */
-function Editor() : JSX.Element {
+function Editor(onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void) : JSX.Element {
  
     const [shaderCode, setShaderCode] = React.useState(
 `#version 300 es
@@ -41,8 +41,9 @@ void main() {
     };
 
     // Shader editor onchange callback
-    const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {    
+    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {    
         setShaderCode(event.target.value)
+        onChange(event);
         if (shaderNFT !== null) {
             shaderNFT.tryCompile(event.target.value);
         }
@@ -64,7 +65,7 @@ void main() {
                 fontSize: 14,
                 fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
               }}
-              onChange={onChange}
+              onChange={handleChange}
             />
         </Container>
     );
