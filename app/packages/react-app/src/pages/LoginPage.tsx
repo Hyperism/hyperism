@@ -63,13 +63,13 @@ function LoginPage(): JSX.Element {
     try {
       const data = { email: email, password: password };
       axios
-        .post("http://localhost:3000/loginin", JSON.stringify(data), {
+        .post("http://localhost:3000/api/loginin", JSON.stringify(data), {
           headers: {
             "Content-Type": `application/json`,
           },
         })
         .then((res) => {
-          console.log("signup requset success : " + res);
+          console.log("POST api/loginin requset success : " + res);
           // console.log(axios.defaults.headers.common['Authorization']);
           // axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
           console.log(localStorage.getItem("user"));
@@ -78,10 +78,10 @@ function LoginPage(): JSX.Element {
           window.location.reload();
         })
         .catch((ex) => {
-          console.log("signup requset fail : " + ex);
+          console.log("POST api/loginin requset fail : " + ex);
         })
         .finally(() => {
-          console.log("Signup Request End");
+          console.log("POST api/loginin Request End");
         });
     } catch (e) {
       console.log(e);

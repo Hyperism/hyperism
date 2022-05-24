@@ -55,21 +55,21 @@ function SignUpPage(): JSX.Element {
       };
       console.log(signupData);
       axios
-        .post("http://localhost:3000/signup", JSON.stringify(signupData), {
+        .post("http://localhost:3000/api/signup", JSON.stringify(signupData), {
           headers: {
             "Content-Type": `application/json`,
           },
         })
         .then((res) => {
-          console.log("signup requset success : " + resizeBy);
+          console.log("POST api/signup requset success : " + resizeBy);
           localStorage.setItem("user", JSON.stringify(res.data));
           window.location.reload();
         })
         .catch((ex) => {
-          console.log("signup requset fail : " + ex);
+          console.log("POST api/signup requset fail : " + ex);
         })
         .finally(() => {
-          console.log("Signup Request End");
+          console.log("POST api/signup Request End");
         });
     } catch (e) {
       console.log(e);
