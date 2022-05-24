@@ -8,8 +8,10 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { MetadataAddInfo, UserLoginInfo } from "./Interfaces";
+import axios from "axios";
 
 function EditorPage(): JSX.Element {
+  /* eslint-disable   @typescript-eslint/no-non-null-assertion */
   const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
   const [values, setValues] = React.useState<MetadataAddInfo>({
     owner: userObj.user.username,
@@ -17,42 +19,67 @@ function EditorPage(): JSX.Element {
     minter: userObj.user.username,
     title: "",
     description: "",
-    shaderCode: "",
+    shader: "",
   });
 
-  const handleChange = (prop: keyof MetadataAddInfo) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleChange =
+    (prop: keyof MetadataAddInfo) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({ ...values, [prop]: event.target.value });
+    };
+
+  const handleShaderChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ): void => {
+    setValues({ ...values, shader: event.target.value });
   };
 
-  const handleShaderChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
-    setValues({ ...values, shaderCode: event.target.value });
+  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, price: Number(event.target.value) });
   };
 
   const mintHandler = () => {
-    console.log(values);
+    try {
+      console.log(values);
+      axios
+        .post("http://localhost:3000/api/meta/add", values, {
+          headers: {
+            "Content-Type": `application/json`,
+            Authorization: `${userObj.token}`,
+          },
+        })
+        .then((res) => {
+          console.log("POST api/meta/add requset success : " + res);
+        })
+        .catch((ex) => {
+          console.log("POST api/meta/add requset fail : " + ex);
+        })
+        .finally(() => {
+          console.log("POST api/meta/add Request End");
+        });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
     <Container sx={{ bgcolor: "#282C34" }}>
-      <Editor onChange={handleShaderChange}/>
+      <Editor onChange={handleShaderChange} />
       <FormControl fullWidth sx={{ m: 1 }}>
         <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
         <OutlinedInput
           id="outlined-adornment-amount"
           value={values.price}
-          onChange={handleChange("price")}
+          onChange={handlePriceChange}
           startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          label="Amount"
+          label="Price"
         />
       </FormControl>
       <FormControl fullWidth sx={{ m: 1 }}>
         <TextField
           id="filled-textarea"
-          label="Multiline Placeholder"
+          label="Title"
           placeholder="Placeholder"
-          multiline
           value={values.title}
           onChange={handleChange("title")}
           variant="filled"
@@ -61,7 +88,7 @@ function EditorPage(): JSX.Element {
       <FormControl fullWidth sx={{ m: 1 }}>
         <TextField
           id="filled-multiline-static"
-          label="Multiline"
+          label="Description"
           multiline
           rows={4}
           value={values.description}
