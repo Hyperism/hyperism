@@ -17,7 +17,7 @@ function ExplorePage(): JSX.Element {
   const [shaderNFTs, setShaderNFTs] = React.useState<MetadataInfo[]>([]);
   const [shaderCodes, setShaderCodes] = React.useState<
     Map<string, ShaderQueryInfo>
-  >(new Map());
+  >(() => new Map());
 
   const queryShaderCode = (token: string, id: string) => {
     try {
@@ -33,8 +33,7 @@ function ExplorePage(): JSX.Element {
             "POST api/meta/getshader Request success : " +
               JSON.stringify(res.data)
           );
-          // TODO: setShaderCodes
-          setShaderCodes(new Map([...shaderCodes, [id, res.data]]);
+          setShaderCodes(shaderCodes.set(id, res.data));
         })
         .catch((ex) => {
           console.log("POST api/meta Request fail : " + ex);
@@ -64,9 +63,11 @@ function ExplorePage(): JSX.Element {
           console.log(
             "GET api/meta Request success : " + JSON.stringify(res.data)
           );
-          setShaderNFTs(res.data.data);
-          console.log(shaderNFTs);
-          queryShaderCode(userObj.token, res.data.data._id);
+          if (res.data.data != null) {
+            setShaderNFTs(res.data.data);
+            console.log(shaderNFTs);
+            queryShaderCode(userObj.token, res.data.data._id);
+          }
         })
         .catch((ex) => {
           console.log("GET api/meta Request fail : " + ex);
