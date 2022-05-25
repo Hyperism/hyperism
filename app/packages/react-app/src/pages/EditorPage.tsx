@@ -38,6 +38,7 @@ function EditorPage(): JSX.Element {
     setValues({ ...values, price: Number(event.target.value) });
   };
 
+  const navigate = useNavigate(); 
   const mintHandler = () => {
     try {
       console.log(values);
@@ -50,6 +51,7 @@ function EditorPage(): JSX.Element {
         })
         .then((res) => {
           console.log("POST api/meta/add requset success : " + res);
+          navigate("/main");
         })
         .catch((ex) => {
           console.log("POST api/meta/add requset fail : " + ex);
