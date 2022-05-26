@@ -3,6 +3,17 @@ import { abis, byteCodes } from "../index";
 import fs from "fs";
 
 /**
+ * @return {string} Returns the chainId of current network
+ */
+export async function getChainId() {
+  const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  // Prompt user for account connections
+  await provider.send("eth_requestAccounts", []);
+  const { chainId } = await provider.getNetwork();
+  return chainId;
+}
+
+/**
  * @return {string} Returns the address of wallet at the current web3 provider
  */
 export async function getWallet() {
@@ -96,14 +107,14 @@ export async function Minting(walletAddress, metaId, tokenId) {
     "ShaderNFT Minted : owner({}), tokenId({})",
     await mst.ownerOf(tokenId)
   );
-  data = await fs.readFileSync("mst_id.json");
+  data = fs.readFileSync("mst_id.json");
   if (data.toString().length == 0) {
     objs.push(obj);
-    await fs.writeFileSync("mst_id.json", JSON.stringify(objs));
+    fs.writeFileSync("mst_id.json", JSON.stringify(objs));
   } else {
     objs = JSON.parse(data);
     objs.push(obj);
-    await fs.writeFileSync("mst_id.json", JSON.stringify(objs));
+    fs.writeFileSync("mst_id.json", JSON.stringify(objs));
   }
   // we write mst & id pair json file
 
@@ -114,14 +125,14 @@ export async function Minting(walletAddress, metaId, tokenId) {
     deployer: wallet.address,
   };
 
-  data2 = await fs.readFileSync("mst_deployer.json");
+  data2 = fs.readFileSync("mst_deployer.json");
   if (data2.toString().length == 0) {
     objs2.push(obj2);
-    await fs.writeFileSync("mst_deployer.json", JSON.stringify(objs2));
+    fs.writeFileSync("mst_deployer.json", JSON.stringify(objs2));
   } else {
     objs2 = JSON.parse(data2);
     objs2.push(obj2);
-    await fs.writeFileSync("mst_deployer.json", JSON.stringify(objs2));
+    fs.writeFileSync("mst_deployer.json", JSON.stringify(objs2));
   }
   // we write mst & deployer pair json file
 }
