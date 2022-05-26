@@ -14,7 +14,7 @@ export async function getChainId() {
 }
 
 /**
- * @return {string} Returns the address of wallet at the current web3 provider
+ * @return {Promise<string>} Returns the address of wallet at the current web3 provider
  */
 export async function getWallet() {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
@@ -31,7 +31,7 @@ export async function getWallet() {
  * @param {string} metaId meta id
  * @return {string} MintShaderToken contract address corresponded to meta id
  */
-export async function getMstbyId(metaId) {
+export function getMstbyId(metaId) {
   data = fs.readFileSync("mst_id.json");
   arr = JSON.parse(data);
   for (idx in arr) {
@@ -61,7 +61,7 @@ export async function getDepbyMst(mstaddr) {
  * @param {string} mstaddr MintShaderToken contract address
  * @return {string} TradeShaderToken contract address corresponded to MintShaderToken contract address
  */
-export async function getTstbyMst(mstaddr) {
+export function getTstbyMst(mstaddr) {
   data = fs.readFileSync("mst_tst.json");
   arr = JSON.parse(data);
   for (idx in arr) {

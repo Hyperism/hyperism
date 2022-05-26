@@ -9,8 +9,12 @@ import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { MetadataAddInfo, UserLoginInfo } from "./Interfaces";
 import axios from "axios";
-import { getWallet, Minting, getMstbyId, onSale1 } from "@my-app/contracts";
-import { ethers } from "ethers";
+import {
+  getWallet,
+  Minting,
+  getMstbyId,
+  onSale1,
+} from "@my-app/contracts";
 
 function EditorPage(): JSX.Element {
   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
@@ -24,11 +28,11 @@ function EditorPage(): JSX.Element {
     shader: "",
   });
 
-  const handleChange = (prop: keyof MetadataAddInfo) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  const handleChange =
+    (prop: keyof MetadataAddInfo) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({ ...values, [prop]: event.target.value });
+    };
 
   const handleShaderChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -69,10 +73,10 @@ function EditorPage(): JSX.Element {
           console.log("POST api/meta/add requset success : " + res);
 
           const metaId = res.data.id;
-          const wallet: string = getWallet();
-          minting(wallet, metaId);
-
-          navigate("/main");
+          getWallet().then((wallet) => {
+            minting(wallet, metaId);
+            navigate("/main");
+          });
         })
         .catch((ex) => {
           console.log("POST api/meta/add requset fail : " + ex);
