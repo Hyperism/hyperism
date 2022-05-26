@@ -3,7 +3,7 @@ import { abis, byteCodes } from "../index";
 import fs from "fs";
 
 /**
- * @return {string} ??? ??? ??? ??
+ * @return {string} Returns the address of wallet at the current web3 provider
  */
 export async function getWallet() {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
@@ -16,9 +16,9 @@ export async function getWallet() {
 }
 
 /**
- * @brief meta id? MintShaderToken contract address? ????
- * @param {string} metaId ??id
- * @return {string} ??id? ???? MintShaderToken contract address
+ * @brief get MintShaderToken contract address with meta Id
+ * @param {string} metaId meta id
+ * @return {string} MintShaderToken contract address corresponded to meta id
  */
 export async function getMstbyId(metaId) {
   data = fs.readFileSync("mst_id.json");
@@ -31,9 +31,9 @@ export async function getMstbyId(metaId) {
 }
 
 /**
- * @brief ?? ??? ????? deployer ?? ????
+ * @brief get deployer wallet address with MintShaderToken smart contract address
  * @param {string} mstaddr MintShaderToken contract address
- * @return {string} mstaddr? deployer? ??
+ * @return {string} deployer wallet address corresponded to MintShaderToken contract address
  */
 export async function getDepbyMst(mstaddr) {
   data = fs.readFileSync("mst_deployer.json");
@@ -46,9 +46,9 @@ export async function getDepbyMst(mstaddr) {
 }
 
 /**
- * @brief ?? MintShaderToken Contract? ??? TradeShaderToken ??? ?? ??
+ * @brief get TradeShaderToken contract address with MintShaderToken smart contract address
  * @param {string} mstaddr MintShaderToken contract address
- * @return {string} mstaddr? ???? ??? TradeShaderToken contract address
+ * @return {string} TradeShaderToken contract address corresponded to MintShaderToken contract address
  */
 export async function getTstbyMst(mstaddr) {
   data = fs.readFileSync("mst_tst.json");
@@ -61,10 +61,8 @@ export async function getTstbyMst(mstaddr) {
 }
 
 /**
- * @brief MintShaderToken ????? wallet???? ????.
- *        ??? ??? ???? uri? ???
- *        ????? json?? ??
- * @param {string} walletAddress ?? ??
+ * @brief Deploy MintShaderToken contract to current wallet account
+ * @param {string} walletAddress wallet address to deploy MintShaderToken contract
  * @param {string} metaId meta id
  * @param {int} tokenId tokenId
  */
@@ -82,7 +80,7 @@ export async function Minting(walletAddress, metaId, tokenId) {
 
   await mst.mintShaderToken(tokenId);
   const fiberaddr = "localhost/getmetabyid/";
-  // Remark : fiberaddr? RESTAPI ??? ??? ?????
+  // Remark : We must sync fiber address and REST api address
 
   await mst.setTokenUri(tokenId, fiberaddr + metaId);
   const ad = await mst.uri(tokenId);
@@ -129,12 +127,10 @@ export async function Minting(walletAddress, metaId, tokenId) {
 }
 
 /**
- * @brief ??? ??? ? ??? ??? ????
- *        ???? ??? ????? ??? mstaddr? ????. (getMstbyId? ???? ?? ? ??)
- *        ??? ???? ?? ??? ?? ??? ???.
- * @param {string} wallet ?? ??
- * @param {string} mstaddr MintShaderToke contract? address
- * @param {int} price ?? ??
+ * @brief Use same wallet address with above function. Set the ether price of given MintShaderToken contract
+ * @param {string} wallet metamask wallet address
+ * @param {string} mstaddr MintShaderToken contract address
+ * @param {int} price ether price
  */
 export async function onSale1(wallet, mstaddr, price, tokenId) {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
@@ -174,26 +170,17 @@ export async function onSale1(wallet, mstaddr, price, tokenId) {
   // we write mst & tst pair json file
 }
 
-// ? ??? ?? ??
-async function onSale2(wallet, mstaddr, price) {
-  const mst = await ethers.getContractAt("MintShaderToken", mstaddr);
-  const tst = await ethers.getContractAt(
-    "TradeShaderToken",
-    getTstbyMst(mstaddr)
-  );
-}
-
 /**
- * @brief ??? ???? ????.
- *        wallet? ?? ?? ??? ??? ??? ?? ????? ??.
- *        mstaddr? Minting ?? ??? ???? ??? ???
- *        mstaddr? ??? onSale1?? TradeShaderToken contract? ????? ?? mst_tst ??? ?? ???? ???
- *        ??? TradeShaderToken contract? tstaddr? ???
- *
- * @param {string} wallet ?? ??
- * @param {string} tstaddr TradeShaderToken Contract ?? (getTstbyMst ??? ???? ?? ? ??)
- * @param {string} mstaddr MintShaderToken Contract ??  (getMstbyId ??? ???? ?? ? ??)
- * @param {int} price ?? ??
+ * @brief Buy ShaderNFT with ehter
+ * wallet must be different with deployer wallet
+ * MintShaderToken address must be same with the address which is used for deploying
+ * When onSale1 is called with MintShaderToken contract, TradeShaderToken contract is deployed and
+ * the pair of MST and TST contract addresses are recorded in mst_tst.json file.
+ * tstaddr must be the one in mst_tst.json file.
+ * @param {string} wallet metamask wallet address
+ * @param {string} tstaddr TradeShaderToken Contract address (get by getTstByMst)
+ * @param {string} mstaddr MintShaderToken Contract address (get by getMstbyId)
+ * @param {int} price token price
  */
 export async function onPurchase(wallet, tstaddr, mstaddr, tokenId, price) {
   const mst = await ethers.getContractAt("MintShaderToken", mstaddr);
@@ -203,18 +190,18 @@ export async function onPurchase(wallet, tstaddr, mstaddr, tokenId, price) {
   await mst.modifyOwner(tokenId);
 }
 
-// ? ??? ?? ??? ?? ?????.
+// Code for test
 async function main() {
   wallet = await ethers.getSigner("0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199");
-  // ?? ??? ????? ?????? ?????
+  // Get wallet address should be replaced with metamask
 
   metaId = "abcd";
-  // restapi? ??? db?? ??? ???? ?????
+  // Should meta id from Rest api
 
   price = 1;
   tokenId = 1;
   await Minting(wallet, metaId, tokenId);
-  // ??? ??? token? ID? 1? ???
+  // tokenId must be 1.
 
   mstaddr = await getMstbyId(metaId);
   // get mst from json
@@ -222,7 +209,7 @@ async function main() {
   // seller = await getDepbyMst(mst)
   // seller = await (await ethers.getContractAt("MintShaderToken", mstaddr)).ownerOf(tokenId)
   //two ways to get seller
-  // ? ???? mst? ???? MintshaderToken contract ??? ????.
+  // Get MintShaderToken contract corresponded to MST address
 
   await onSale1(wallet, mstaddr, 10, tokenId);
 
@@ -232,6 +219,6 @@ async function main() {
   );
 
   await onPurchase(wallet2, tstaddr, mstaddr, tokenId, 10);
-  //? ???? ?????
+  // 
   console.log("end");
 }
