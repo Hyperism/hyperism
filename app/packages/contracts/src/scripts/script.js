@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { abis, byteCodes } from "../index";
-import fs from "fs";
+
 
 /**
  * @return {string} Returns the chainId of current network
@@ -46,15 +46,15 @@ export function getMstbyId(metaId) {
  * @param {string} mstaddr MintShaderToken contract address
  * @return {string} deployer wallet address corresponded to MintShaderToken contract address
  */
-export async function getDepbyMst(mstaddr) {
-  data = fs.readFileSync("mst_deployer.json");
-  arr = JSON.parse(data);
-  for (idx in arr) {
-    if (arr[idx].mst == mstaddr)
-      // console.log(arr[idx])
-      return arr[idx].deployer;
-  }
-}
+// export async function getDepbyMst(mstaddr) {
+//   data = fs.readFileSync("mst_deployer.json");
+//   arr = JSON.parse(data);
+//   for (idx in arr) {
+//     if (arr[idx].mst == mstaddr)
+//       // console.log(arr[idx])
+//       return arr[idx].deployer;
+//   }
+// }
 
 /**
  * @brief get TradeShaderToken contract address with MintShaderToken smart contract address
@@ -96,44 +96,14 @@ export async function Minting(walletAddress, metaId, tokenId) {
   await mst.setTokenUri(tokenId, fiberaddr + metaId);
   const ad = await mst.uri(tokenId);
 
-  var objs = [];
-
-  var obj = {
-    mst: mst.address,
-    metaId: metaId,
+  const test = "abcdefg"
+  const opts = {
+    types: [{
+      description: `${test}`,
+      accept: {'text/plain': ['.txt']},
+    }],
   };
-
-  console.log(
-    "ShaderNFT Minted : owner({}), tokenId({})",
-    await mst.ownerOf(tokenId)
-  );
-  data = fs.readFileSync("mst_id.json");
-  if (data.toString().length == 0) {
-    objs.push(obj);
-    fs.writeFileSync("mst_id.json", JSON.stringify(objs));
-  } else {
-    objs = JSON.parse(data);
-    objs.push(obj);
-    fs.writeFileSync("mst_id.json", JSON.stringify(objs));
-  }
-  // we write mst & id pair json file
-
-  var objs2 = [];
-
-  var obj2 = {
-    mst: mst.address,
-    deployer: wallet.address,
-  };
-
-  data2 = fs.readFileSync("mst_deployer.json");
-  if (data2.toString().length == 0) {
-    objs2.push(obj2);
-    fs.writeFileSync("mst_deployer.json", JSON.stringify(objs2));
-  } else {
-    objs2 = JSON.parse(data2);
-    objs2.push(obj2);
-    fs.writeFileSync("mst_deployer.json", JSON.stringify(objs2));
-  }
+  window.showSaveFilePicker(opts);
   // we write mst & deployer pair json file
 }
 
