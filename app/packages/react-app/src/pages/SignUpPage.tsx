@@ -47,7 +47,7 @@ function SignUpPage(): JSX.Element {
     event.preventDefault();
     try {
       SignupRequest(new FormData(event.currentTarget), (res) => {
-        localStorage.setItem("user", JSON.stringify(res.data));
+        localStorage.setItem("user", res);
         window.location.reload();
       });
     } catch (e) {

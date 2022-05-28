@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
-import axios from "axios";
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -63,9 +62,7 @@ function LoginPage(): JSX.Element {
   function joinHandler(email: string, password: string) {
     try {
       LoginRequest(email, password, (res) => {
-        console.log(localStorage.getItem("user"));
-        localStorage.setItem("user", JSON.stringify(res.data));
-        console.log("Bearer " + res.data.token);
+        localStorage.setItem("user", res);
         window.location.reload();
       });
     } catch (e) {
