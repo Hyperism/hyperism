@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import { Container } from "@mui/material";
-import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -13,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
+import { SignupRequest } from "./RestUtils";
 
 /* eslint-disable   @typescript-eslint/no-explicit-any */
 function Copyright(props: any): JSX.Element {
@@ -45,32 +45,11 @@ function SignUpPage(): JSX.Element {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
     try {
-      const signupData = {
-        email: data.get("email"),
-        password: data.get("password"),
-        username: data.get("username"),
-      };
-      console.log(signupData);
-      axios
-        .post("http://localhost:3000/api/signup", JSON.stringify(signupData), {
-          headers: {
-            "Content-Type": `application/json`,
-          },
-        })
-        .then((res) => {
-          console.log("POST api/signup requset success : " + resizeBy);
-          localStorage.setItem("user", JSON.stringify(res.data));
-          window.location.reload();
-        })
-        .catch((ex) => {
-          console.log("POST api/signup requset fail : " + ex);
-        })
-        .finally(() => {
-          console.log("POST api/signup Request End");
-        });
+      SignupRequest(new FormData(event.currentTarget), (res) => {
+        localStorage.setItem("user", JSON.stringify(res.data));
+        window.location.reload();
+      });
     } catch (e) {
       console.log(e);
     }

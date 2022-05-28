@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { LoginRequest } from "./RestUtils";
 
 /* eslint-disable   @typescript-eslint/no-explicit-any */
 function Copyright(props: any): JSX.Element {
@@ -61,28 +62,12 @@ function LoginPage(): JSX.Element {
 
   function joinHandler(email: string, password: string) {
     try {
-      const data = { email: email, password: password };
-      axios
-        .post("http://localhost:3000/api/loginin", JSON.stringify(data), {
-          headers: {
-            "Content-Type": `application/json`,
-          },
-        })
-        .then((res) => {
-          console.log("POST api/loginin requset success : " + res);
-          // console.log(axios.defaults.headers.common['Authorization']);
-          // axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
-          console.log(localStorage.getItem("user"));
-          localStorage.setItem("user", JSON.stringify(res.data));
-          console.log("Bearer " + res.data.token);
-          window.location.reload();
-        })
-        .catch((ex) => {
-          console.log("POST api/loginin requset fail : " + ex);
-        })
-        .finally(() => {
-          console.log("POST api/loginin Request End");
-        });
+      LoginRequest(email, password, (res) => {
+        console.log(localStorage.getItem("user"));
+        localStorage.setItem("user", JSON.stringify(res.data));
+        console.log("Bearer " + res.data.token);
+        window.location.reload();
+      });
     } catch (e) {
       console.log(e);
     }

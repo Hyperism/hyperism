@@ -9,12 +9,12 @@ import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { MetadataAddInfo, UserLoginInfo } from "./Interfaces";
 import axios from "axios";
+import { getWallet, Minting } from "@my-app/contracts";
 import {
-  getWallet,
-  Minting,
-  getMstbyId,
-  onSale1,
-} from "@my-app/contracts";
+  StoreMintShaderTokenID,
+  StoreTradeShaderTokenAddress,
+  StoreNFTMetadataInfo,
+} from "./RestUtils";
 
 function EditorPage(): JSX.Element {
   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
@@ -44,46 +44,20 @@ function EditorPage(): JSX.Element {
     setValues({ ...values, price: Number(event.target.value) });
   };
 
-  const minting = async (wallet: string, metaId: string) => {
-    await Minting(wallet, metaId, 1);
-    const mstaddr = getMstbyId(metaId);
-    await onSale1(wallet, mstaddr, values.price, 1);
+  const minting = async (metaId: string, price: number) => {
+    const { mstAddress, tstAddress } = await Minting(metaId, 1, price);
+    StoreMintShaderTokenID(mstAddress, metaId);
+    StoreTradeShaderTokenAddress(mstAddress, tstAddress);
   };
 
   const navigate = useNavigate();
   const mintHandler = React.useCallback(async () => {
     try {
-      const form = new FormData();
-      form.append("owner", values.owner);
-      form.append("price", values.price.toString());
-      form.append("minter", values.minter);
-      form.append("title", values.title);
-      form.append("description", values.description);
-      form.append("shader", values.shader);
-
-      console.log(form);
-      axios
-        .post("http://localhost:3000/api/meta/add", form, {
-          headers: {
-            "Content-Type": `application/json`,
-            Authorization: `${userObj.token}`,
-          },
-        })
-        .then((res) => {
-          console.log("POST api/meta/add requset success : " + res);
-
-          const metaId = res.data.id;
-          getWallet().then((wallet) => {
-            minting(wallet, metaId);
-            navigate("/main");
-          });
-        })
-        .catch((ex) => {
-          console.log("POST api/meta/add requset fail : " + ex);
-        })
-        .finally(() => {
-          console.log("POST api/meta/add Request End");
-        });
+      StoreNFTMetadataInfo(values, (metaId: string) => {
+        console.log(`MetaId : ${metaId}`)
+        minting(metaId, 5 /* values.price */ );
+        navigate("/main");
+      });
     } catch (e) {
       console.log(e);
     }
