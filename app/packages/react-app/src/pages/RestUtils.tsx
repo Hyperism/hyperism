@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import {
   UserLoginInfo,
   MetadataInfo,
@@ -6,7 +6,7 @@ import {
   MetadataAddInfo,
 } from "./Interfaces";
 
-export function GetAllMetadatas(callback: (res: MetadataInfo[]) => void) {
+export function GetAllMetadatas(callback: (res: MetadataInfo[]) => void): void {
   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
   const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
 
@@ -32,10 +32,43 @@ export function GetAllMetadatas(callback: (res: MetadataInfo[]) => void) {
     });
 }
 
+export function GetAllMetadatasWithOwner(
+  callback: (res: MetadataInfo[]) => void
+): void {
+  /* eslint-disable   @typescript-eslint/no-non-null-assertion */
+  const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
+
+  axios
+    .get(`http://localhost:3000/api/meta/getbyowner/${userObj.user.username}`, {
+      headers: {
+        "Content-Type": `application/json`,
+        Authorization: `${userObj.token}`,
+      },
+    })
+    .then((res) => {
+      console.log(
+        `GET http://localhost:3000/api/meta/getbyowner/${userObj.user.username} Request Success : ` +
+          JSON.stringify(res.data)
+      );
+      callback(res.data.data);
+    })
+    .catch((ex) => {
+      console.log(
+        `GET http://localhost:3000/api/meta/getbyowner/${userObj.user.username} Request Fail : ` +
+          ex
+      );
+    })
+    .finally(() => {
+      console.log(
+        `GET http://localhost:3000/api/meta/getbyowner/${userObj.user.username} Request End`
+      );
+    });
+}
+
 export function GetShaderCode(
   metaId: string,
   callback: (res: ShaderQueryInfo) => void
-) {
+): void {
   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
   const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
 
@@ -48,10 +81,10 @@ export function GetShaderCode(
     })
     .then((res) => {
       console.log(
-        "GET http://localhost:3000/api/meta/getshader/${metaId} Request Success : " +
+        `GET http://localhost:3000/api/meta/getshader/${metaId} Request Success : ` +
           JSON.stringify(res.data)
       );
-      callback(res.data.data);
+      callback(res.data);
     })
     .catch((ex) => {
       console.log(
@@ -61,7 +94,7 @@ export function GetShaderCode(
     })
     .finally(() => {
       console.log(
-        "GET http://localhost:3000/api/meta/getshader/${metaId} Request End"
+        `GET http://localhost:3000/api/meta/getshader/${metaId} Request End`
       );
     });
 }
@@ -69,7 +102,7 @@ export function GetShaderCode(
 export function StoreNFTMetadataInfo(
   info: MetadataAddInfo,
   callback: (metaId: string) => void
-) {
+): void {
   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
   const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
 
@@ -81,7 +114,6 @@ export function StoreNFTMetadataInfo(
   form.append("description", info.description);
   form.append("shader", info.shader);
 
-  console.log(form);
   axios
     .post("http://localhost:3000/api/meta/add", form, {
       headers: {
@@ -101,7 +133,7 @@ export function StoreNFTMetadataInfo(
     });
 }
 
-export function TransferNFTOwnership(metaId: string) {
+export function TransferNFTOwnership(metaId: string): void {
   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
   const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
 
@@ -133,7 +165,10 @@ export function TransferNFTOwnership(metaId: string) {
     });
 }
 
-export function StoreMintShaderTokenID(mstAddress: string, metaId: string) {
+export function StoreMintShaderTokenID(
+  mstAddress: string,
+  metaId: string
+): void {
   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
   const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
 
@@ -166,7 +201,7 @@ export function StoreMintShaderTokenID(mstAddress: string, metaId: string) {
 export function GetMintShaderTokenAddress(
   metaId: string,
   callback: (mstAddress: string) => void
-) {
+): void {
   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
   const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
 
@@ -182,7 +217,7 @@ export function GetMintShaderTokenAddress(
         `GET http://localhost:3000/api/meta/mst_id/${metaId} Request Success : ` +
           JSON.stringify(res.data)
       );
-      callback(res.data.MST);
+      callback(res.data.data[0].mst);
     })
     .catch((ex) => {
       console.log(
@@ -200,7 +235,7 @@ export function GetMintShaderTokenAddress(
 export function StoreTradeShaderTokenAddress(
   mstAddress: string,
   tstAddress: string
-) {
+): void {
   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
   const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
 
@@ -233,7 +268,7 @@ export function StoreTradeShaderTokenAddress(
 export function GetTradeShaderTokenAddress(
   mstAddress: string,
   callback: (tstAddress: string) => void
-) {
+): void {
   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
   const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
 
@@ -249,7 +284,7 @@ export function GetTradeShaderTokenAddress(
         `GET http://localhost:3000/api/meta/mst_tst/${mstAddress} Request Success : ` +
           JSON.stringify(res.data)
       );
-      callback(res.data.TST);
+      callback(res.data.data[0].tst);
     })
     .catch((ex) => {
       console.log(
@@ -266,8 +301,8 @@ export function GetTradeShaderTokenAddress(
 
 export function SignupRequest(
   signupForm: FormData,
-  callback: (res: AxiosResponse<any, any>) => void
-) {
+  callback: (res: string) => void
+): void {
   const signupData = {
     email: signupForm.get("email"),
     password: signupForm.get("password"),
@@ -282,7 +317,7 @@ export function SignupRequest(
     })
     .then((res) => {
       console.log("POST api/signup requset success : " + JSON.stringify(res));
-      callback(res);
+      callback(JSON.stringify(res.data));
     })
     .catch((ex) => {
       console.log("POST api/signup requset fail : " + ex);
@@ -295,8 +330,8 @@ export function SignupRequest(
 export function LoginRequest(
   email: string,
   password: string,
-  callback: (res: AxiosResponse<any, any>) => void
-) {
+  callback: (res: string) => void
+): void {
   const data = { email: email, password: password };
   axios
     .post("http://localhost:3000/api/loginin", JSON.stringify(data), {
@@ -306,7 +341,7 @@ export function LoginRequest(
     })
     .then((res) => {
       console.log("POST api/loginin requset success : " + res);
-      callback(res);
+      callback(JSON.stringify(res.data));
     })
     .catch((ex) => {
       console.log("POST api/loginin requset fail : " + ex);
