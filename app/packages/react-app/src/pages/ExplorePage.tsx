@@ -1,13 +1,12 @@
 import React from "react";
 import Editor from "../components/Editor";
 import { Container } from "@mui/material";
-import { UserLoginInfo, MetadataInfo, ShaderQueryInfo } from "./Interfaces";
-import axios, { AxiosResponse } from "axios";
+import { MetadataInfo, ShaderQueryInfo } from "./Interfaces";
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
-import { getWallet, onPurchase } from "@my-app/contracts";
+import TextField from "@mui/material/TextField";
+import { onPurchase, isOwned } from "@my-app/contracts";
 import {
   GetAllMetadatas,
   GetShaderCode,
@@ -18,20 +17,22 @@ import {
 
 function tradeNFTHandler(metaId: string, price: number) {
   return () => {
-    getWallet().then((wallet) => {
-      GetMintShaderTokenAddress(metaId, (mstAddress: string) => {
-        GetTradeShaderTokenAddress(mstAddress, (tstAddress: string) => {
-          onPurchase(wallet, tstAddress, mstAddress, 1, price)
-            .then(() => {
-              TransferNFTOwnership(metaId);
-            })
-            .catch((e) => {
-              console.log(e);
-            })
-            .finally(() => {
-              "NFT Trading Success";
+    console.log(metaId, price);
+    GetMintShaderTokenAddress(metaId, (mstAddress: string) => {
+      GetTradeShaderTokenAddress(mstAddress, (tstAddress: string) => {
+        onPurchase(tstAddress, mstAddress, 1, price)
+          .then(() => {
+            TransferNFTOwnership(metaId);
+          })
+          .catch((e) => {
+            console.log(e);
+          })
+          .finally(() => {
+            "NFT Trading Success";
+            isOwned(tstAddress, 1).then((isOwned: boolean) => {
+              console.log("Current metamask is owned ? : " + isOwned);
             });
-        });
+          });
       });
     });
   };
@@ -53,63 +54,25 @@ function ExplorePage(): JSX.Element {
   React.useEffect(() => {
     try {
       GetAllMetadatas((metaDataInfos: MetadataInfo[]) => {
-        setShaderNFTs(metaDataInfos);
-        console.log("ShaderNFTs : {}", shaderNFTs);
-        shaderNFTs.forEach((metaInfo) => {
-          try {
-            GetShaderCode(metaInfo._id, (shaderQuery: ShaderQueryInfo) => {
-              setShaderCodes((codes) => {
-                codes.set(metaInfo._id, shaderQuery);
-                console.log("ShaderCodes : {}", shaderCodes);
-                return codes;
+        if (metaDataInfos != null) {
+          metaDataInfos.forEach((metaInfo) => {
+            setShaderNFTs([...shaderNFTs, metaInfo]);
+            console.log("ShaderNFTs : {}", shaderNFTs);
+            try {
+              GetShaderCode(metaInfo._id, (shaderQuery: ShaderQueryInfo) => {
+                console.log("ShaderQuery : {}", shaderQuery);
+                setShaderCodes(shaderCodes.set(metaInfo._id, shaderQuery));
               });
-            });
-          } catch (e) {
-            console.log(e);
-          }
-        });
+            } catch (e) {
+              console.error(e);
+            }
+          });
+        }
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }, []);
-
-  // React.useEffect(() => {
-  //   /* eslint-disable   @typescript-eslint/no-non-null-assertion */
-  //   const userObj: UserLoginInfo = JSON.parse(localStorage.getItem("user")!);
-  //   console.log(userObj);
-
-  //   shaderNFTs.forEach((metaInfo) => {
-  //     try {
-  //       console.log("queryShaderCode token : {}", userObj.token);
-  //       axios
-  //         .get(`http://localhost:3000/api/meta/getshader/${metaInfo._id}`, {
-  //           headers: {
-  //             "Content-Type": `application/json`,
-  //             Authorization: `${userObj.token}`,
-  //           },
-  //         })
-  //         .then((res) => {
-  //           console.log(
-  //             "GET api/meta/getshader Request success : " +
-  //               JSON.stringify(res.data)
-  //           );
-  //           console.log("Shader Code : {}", shaderCodes);
-  //           setShaderCodes(shaderCodes.set(metaInfo._id, res.data));
-  //         })
-  //         .catch((ex) => {
-  //           console.log(
-  //             `http://localhost:3000/api/meta/getshader/${metaInfo._id}` + ex
-  //           );
-  //         })
-  //         .finally(() => {
-  //           console.log("GET api/meta Request End");
-  //         });
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   });
-  // }, [shaderNFTs]);
 
   return (
     <Container sx={{ bgcolor: "#282C34" }}>
@@ -117,19 +80,40 @@ function ExplorePage(): JSX.Element {
         <Grid container spacing={4}>
           {shaderNFTs.map((shaderInfo, index) => (
             <Grid item key={index} xs={12}>
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                {`Shader Code : ${shaderCodes.get(shaderInfo._id)}`}
-              </Card>
               <FormControl fullWidth sx={{ m: 4 }}>
-                Owner : ${shaderInfo.owner}
-                Minter: ${shaderInfo.minter}
-                Price : ${shaderInfo.price} ether
+                <Editor
+                  defaultShader={shaderCodes.get(shaderInfo._id)?.shader}
+                />
+                <TextField
+                  id="filled-basic"
+                  label={"Owner : " + shaderInfo.owner}
+                  variant="filled"
+                  inputProps={{ readOnly: true }}
+                />
+                <TextField
+                  id="filled-basic"
+                  label={"Minter : " + shaderInfo.minter}
+                  variant="filled"
+                  inputProps={{ readOnly: true }}
+                />
+                <TextField
+                  id="filled-basic"
+                  label={"Price : " + shaderInfo.price + " ETH"}
+                  variant="filled"
+                  inputProps={{ readOnly: true }}
+                />
+                <TextField
+                  id="filled-basic"
+                  label={"Title : " + shaderInfo.title}
+                  variant="filled"
+                  inputProps={{ readOnly: true }}
+                />
+                <TextField
+                  id="filled-basic"
+                  label={"Description : " + shaderInfo.description}
+                  variant="filled"
+                  inputProps={{ readOnly: true }}
+                />
                 <Button
                   onClick={tradeNFTHandler(shaderInfo._id, shaderInfo.price)}
                   sx={{
@@ -142,11 +126,6 @@ function ExplorePage(): JSX.Element {
                   {"Buy"}
                 </Button>
               </FormControl>
-              <FormControl fullWidth sx={{ m: 4 }}>
-                Title : {shaderInfo.title}
-                Description: {shaderInfo.description}
-              </FormControl>
-              ;
             </Grid>
           ))}
         </Grid>
