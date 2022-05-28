@@ -6,6 +6,7 @@ import EditorPage from "./pages/EditorPage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import ExplorePage from "./pages/ExplorePage";
+import MyPage from "./pages/MyPage";
 
 function App(): JSX.Element {
   return (
@@ -52,6 +53,20 @@ function App(): JSX.Element {
                 <Navigate
                   to={{
                     pathname: "/login",
+                  }}
+                />
+              )
+            }
+          />
+          <Route
+            path="/mypage"
+            element={
+              localStorage.getItem("user") ? (
+                <MyPage />
+              ) : (
+                <Navigate
+                  to={{
+                    pathname: "/mypage",
                   }}
                 />
               )

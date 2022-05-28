@@ -160,7 +160,7 @@ const ResponsiveAppBar = (): JSX.Element => {
               <Button
                 key={"MyPages"}
                 component={Link}
-                to="/explore"
+                to="/mypage"
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 MyPages
