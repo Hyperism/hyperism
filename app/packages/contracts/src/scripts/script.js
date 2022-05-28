@@ -118,20 +118,33 @@ export async function Minting(metaId, tokenId, price) {
  * When onSale1 is called with MintShaderToken contract, TradeShaderToken contract is deployed and
  * the pair of MST and TST contract addresses are recorded in mst_tst.json file.
  * tstaddr must be the one in mst_tst.json file.
- * @param {string} wallet metamask wallet address
  * @param {string} tstaddr TradeShaderToken Contract address (get by getTstByMst)
  * @param {string} mstaddr MintShaderToken Contract address (get by getMstbyId)
  * @param {int} price token price
  */
-export async function onPurchase(wallet, tstaddr, mstaddr, tokenId, price) {
+export async function onPurchase(tstaddr, mstaddr, tokenId, price) {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
   const signer = provider.getSigner();
 
   const mst = new ethers.Contract(mstaddr, abis.mintShaderTokenABI, signer);
-  const tst = new ethers.Contract(mstaddr, abis.tradeShaderTokenABI, signer);
+  const tst = new ethers.Contract(tstaddr, abis.tradeShaderTokenABI, signer);
 
   await tst.purchaseToken(tokenId, { value: price });
   await mst.modifyOwner(tokenId);
+}
+
+/**
+ *
+ * @param {string} tstaddr
+ * @param {*} tokenId
+ */
+export async function isOwned(tstaddr, tokenId) {
+  const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  const signer = provider.getSigner();
+
+  const tst = new ethers.Contract(tstaddr, abis.tradeShaderTokenABI, signer);
+
+  return await tst.isOwner(tokenId);
 }
 
 // Code for test
@@ -144,25 +157,14 @@ async function main() {
 
   price = 1;
   tokenId = 1;
-  await Minting(wallet, metaId, tokenId);
+  const { mstAddress, tstAddress } = await Minting(wallet, metaId, tokenId);
   // tokenId must be 1.
 
-  mstaddr = await getMstbyId(metaId);
-  // get mst from json
-
-  // seller = await getDepbyMst(mst)
-  // seller = await (await ethers.getContractAt("MintShaderToken", mstaddr)).ownerOf(tokenId)
-  //two ways to get seller
-  // Get MintShaderToken contract corresponded to MST address
-
-  await onSale1(wallet, mstaddr, 10, tokenId);
-
-  tstaddr = await getTstbyMst(mstaddr);
   wallet2 = await ethers.getSigner(
     "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
   );
 
-  await onPurchase(wallet2, tstaddr, mstaddr, tokenId, 10);
+  await onPurchase(wallet2, tstAddress, mstAddress, tokenId, 10);
   //
   console.log("end");
 }
