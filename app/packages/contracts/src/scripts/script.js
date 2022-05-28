@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 import { abis, byteCodes } from "../index";
 
-
 /**
  * @return {string} Returns the chainId of current network
  */
@@ -31,15 +30,15 @@ export async function getWallet() {
  * @param {string} metaId meta id
  * @return {string} MintShaderToken contract address corresponded to meta id
  */
-export function getMstbyId(metaId) {
-  data = fs.readFileSync("mst_id.json");
-  arr = JSON.parse(data);
-  for (idx in arr) {
-    if (arr[idx].metaId == metaId)
-      // console.log(arr[idx])
-      return arr[idx].mst;
-  }
-}
+// export function getMstbyId(metaId) {
+//   data = fs.readFileSync("mst_id.json");
+//   arr = JSON.parse(data);
+//   for (idx in arr) {
+//     if (arr[idx].metaId == metaId)
+//       // console.log(arr[idx])
+//       return arr[idx].mst;
+//   }
+// }
 
 /**
  * @brief get deployer wallet address with MintShaderToken smart contract address
@@ -61,23 +60,23 @@ export function getMstbyId(metaId) {
  * @param {string} mstaddr MintShaderToken contract address
  * @return {string} TradeShaderToken contract address corresponded to MintShaderToken contract address
  */
-export function getTstbyMst(mstaddr) {
-  data = fs.readFileSync("mst_tst.json");
-  arr = JSON.parse(data);
-  for (idx in arr) {
-    if (arr[idx].mst == mstaddr)
-      // console.log(arr[idx])
-      return arr[idx].tst;
-  }
-}
+// export function getTstbyMst(mstaddr) {
+//   data = fs.readFileSync("mst_tst.json");
+//   arr = JSON.parse(data);
+//   for (idx in arr) {
+//     if (arr[idx].mst == mstaddr)
+//       // console.log(arr[idx])
+//       return arr[idx].tst;
+//   }
+// }
 
 /**
  * @brief Deploy MintShaderToken contract to current wallet account
- * @param {string} walletAddress wallet address to deploy MintShaderToken contract
  * @param {string} metaId meta id
  * @param {int} tokenId tokenId
+ * @param {int} price price
  */
-export async function Minting(walletAddress, metaId, tokenId) {
+export async function Minting(metaId, tokenId, price) {
   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
   const signer = provider.getSigner();
 
@@ -94,28 +93,6 @@ export async function Minting(walletAddress, metaId, tokenId) {
   // Remark : We must sync fiber address and REST api address
 
   await mst.setTokenUri(tokenId, fiberaddr + metaId);
-  const ad = await mst.uri(tokenId);
-
-  const test = "abcdefg"
-  const opts = {
-    types: [{
-      description: `${test}`,
-      accept: {'text/plain': ['.txt']},
-    }],
-  };
-  window.showSaveFilePicker(opts);
-  // we write mst & deployer pair json file
-}
-
-/**
- * @brief Use same wallet address with above function. Set the ether price of given MintShaderToken contract
- * @param {string} wallet metamask wallet address
- * @param {string} mstaddr MintShaderToken contract address
- * @param {int} price ether price
- */
-export async function onSale1(wallet, mstaddr, price, tokenId) {
-  const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-  const signer = provider.getSigner();
 
   // We get the contract to deploy
   const TradeShaderToken = await new ethers.ContractFactory(
@@ -124,31 +101,14 @@ export async function onSale1(wallet, mstaddr, price, tokenId) {
     signer
   );
 
-  const tst = await TradeShaderToken.deploy(mstaddr);
-  const mst = await ethers.getContractAt("MintShaderToken", mstaddr);
-
-  await tst.deployed();
+  const tst = await TradeShaderToken.deploy(mst.address);
 
   await mst.setApprovalForAll(tst.address, true);
+
+  console.log(`Price : ${price}`);
   await tst.saleToken(tokenId, price);
 
-  var objs = [];
-
-  var obj = {
-    mst: mst.address,
-    tst: tst.address,
-  };
-
-  data = fs.readFileSync("mst_tst.json");
-  if (data.toString().length == 0) {
-    objs.push(obj);
-    fs.writeFileSync("mst_tst.json", JSON.stringify(objs));
-  } else {
-    objs = JSON.parse(data);
-    objs.push(obj);
-    fs.writeFileSync("mst_tst.json", JSON.stringify(objs));
-  }
-  // we write mst & tst pair json file
+  return { mstAddress: mst.address, tstAddress: tst.address };
 }
 
 /**
@@ -164,8 +124,11 @@ export async function onSale1(wallet, mstaddr, price, tokenId) {
  * @param {int} price token price
  */
 export async function onPurchase(wallet, tstaddr, mstaddr, tokenId, price) {
-  const mst = await ethers.getContractAt("MintShaderToken", mstaddr);
-  const tst = await ethers.getContractAt("TradeShaderToken", tstaddr);
+  const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  const signer = provider.getSigner();
+
+  const mst = new ethers.Contract(mstaddr, abis.mintShaderTokenABI, signer);
+  const tst = new ethers.Contract(mstaddr, abis.tradeShaderTokenABI, signer);
 
   await tst.purchaseToken(tokenId, { value: price });
   await mst.modifyOwner(tokenId);
@@ -200,6 +163,6 @@ async function main() {
   );
 
   await onPurchase(wallet2, tstaddr, mstaddr, tokenId, 10);
-  // 
+  //
   console.log("end");
 }
