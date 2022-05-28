@@ -8,8 +8,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { MetadataAddInfo, UserLoginInfo } from "./Interfaces";
-import axios from "axios";
-import { getWallet, Minting } from "@my-app/contracts";
+import { Minting } from "@my-app/contracts";
 import {
   StoreMintShaderTokenID,
   StoreTradeShaderTokenAddress,
@@ -51,17 +50,17 @@ function EditorPage(): JSX.Element {
   };
 
   const navigate = useNavigate();
-  const mintHandler = React.useCallback(async () => {
+  const mintHandler = () => {
     try {
       StoreNFTMetadataInfo(values, (metaId: string) => {
-        console.log(`MetaId : ${metaId}`)
-        minting(metaId, 5 /* values.price */ );
+        console.log(`MetaId : ${metaId}`);
+        minting(metaId, 5 /* values.price */);
         navigate("/main");
       });
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  };
 
   return (
     <Container sx={{ bgcolor: "#282C34" }}>
