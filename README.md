@@ -10,17 +10,10 @@ Ethereum NFT trading system for GLSL Shader code gadget and visualization
 # Quick Overview
 ```bash
 git clone --recursive https://github.com/Hyperism/hyperism.git
-cd hyperism
-npm install
-// Contract build & deploy will be added later
-
-cd app
+cd hyperism/app
 yarn install
 yarn react-app:start &
 ```
-
-# Demo
-TBA..
 
 ## Contact
 
@@ -33,7 +26,7 @@ The class is licensed under the [MIT License](http://opensource.org/licenses/MIT
 
 Copyright (c) 2022 Team Hyperism
 *   [Jihong Shin](https://github.com/Snowapril)
-*   [Hyungeum Lee](https://github.com/leehyunk6310)
+*   [Hyungeun Lee](https://github.com/leehyunk6310)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
