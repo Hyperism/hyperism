@@ -7,12 +7,27 @@
 
 Ethereum NFT trading system for GLSL Shader code gadget and visualization
 
-# Quick Overview
+# Quick Overview (Four terminals needed for monitoring all activities. Or just execute with '&' to run as background task)
 ```bash
 git clone --recursive https://github.com/Hyperism/hyperism.git
-cd hyperism/app
+cd hyperism
+
+# Run local standalong ethereum blockchain code and console
+npm install
+# At terminal 1
+npx hardhat node
+# At terminal 2
+truffle console
+
+# Run backend server through docker-compose
+# At terminal 3
+cd server && docker-compose up --force-recreate
+
+# Run web application
+# At terminal 4
+cd app
 yarn install
-yarn react-app:start &
+yarn react-app:start
 ```
 
 ## Contact
