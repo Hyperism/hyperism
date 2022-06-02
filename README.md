@@ -7,7 +7,9 @@
 
 Ethereum NFT trading system for GLSL Shader code gadget and visualization
 
-# Quick Overview (Four terminals needed for monitoring all activities. Or just execute with '&' to run as background task)
+# Quick Overview 
+
+**Four terminals needed for monitoring all activities. Or just execute with '&' to run as background task**
 ```bash
 git clone --recursive https://github.com/Hyperism/hyperism.git
 cd hyperism
